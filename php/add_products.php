@@ -11,7 +11,6 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
         try {
-            // Validacija i sanitizacija osnovnih polja
             $type = filter_var(trim($_POST["tip"] ?? ''), FILTER_SANITIZE_SPECIAL_CHARS);
             $type = ucfirst($type);
             
@@ -80,14 +79,12 @@
             exit;
             
         } catch (Exception $e) {
-            // Uhvati greške i prikaži poruku
             $_SESSION['error'] = $e->getMessage();
             header("Location: ../pages/order.php");
             exit;
         }
         
     } else {
-        // Ako forma nije poslata, vrati nazad
         header("Location: ../pages/order.php");
         exit;
     }
