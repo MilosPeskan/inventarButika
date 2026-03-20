@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Provera login-a
 if(!isset($_SESSION['radnik_id'])) {
     header("Location: ../index.php");
     exit();
@@ -93,7 +92,6 @@ if(!isset($_SESSION['radnik_id'])) {
         </form>
     </main>
     <script>
-    // Funkcija za promenu vidljivosti polja
         function promeniPolja() {
             const tip = document.getElementById('tip').value;
             const odecaPolja = document.getElementById('odecaPolja');
@@ -103,11 +101,9 @@ if(!isset($_SESSION['radnik_id'])) {
                 odecaPolja.style.display = 'block';
                 obucaPolja.style.display = 'none';
                 
-                // Dodaj required atribut za polja odeće
                 document.getElementById('velicina').required = true;
                 document.getElementById('vrsta').required = true;
                 
-                // Ukloni required atribut za polja obuće
                 document.getElementById('broj').required = false;
                 document.getElementById('tip-obuce').required = false;
                 document.getElementById('pol').required = false;
@@ -115,23 +111,19 @@ if(!isset($_SESSION['radnik_id'])) {
                 odecaPolja.style.display = 'none';
                 obucaPolja.style.display = 'block';
                 
-                // Ukloni required atribut za polja odeće
                 document.getElementById('velicina').required = false;
                 document.getElementById('vrsta').required = false;
                 
-                // Dodaj required atribut za polja obuće
                 document.getElementById('broj').required = true;
                 document.getElementById('tip-obuce').required = true;
                 document.getElementById('pol').required = true;
             }
         }
         
-        // Postavi početno stanje kada se stranica učita
         document.addEventListener('DOMContentLoaded', function() {
             promeniPolja();
         });
         
-        // Dodaj event listener za promenu selekcije
         document.getElementById('tip').addEventListener('change', promeniPolja);
     </script>
 </body>
