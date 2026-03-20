@@ -12,10 +12,7 @@
     $db = getDBConnection();
     $repo = new Repository($db);
 
-    $svaOdeca = $repo->svaOdeca();
     $svaObuca = $repo->svaObuca();
-
-    $sviProizvodi = array_merge($svaOdeca, $svaObuca);
 ?>
 <!DOCTYPE html>
 <html lang="sr">
