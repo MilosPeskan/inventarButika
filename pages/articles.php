@@ -13,9 +13,6 @@
     $repo = new Repository($db);
 
     $svaOdeca = $repo->svaOdeca();
-    $svaObuca = $repo->svaObuca();
-
-    $sviProizvodi = array_merge($svaOdeca, $svaObuca);
 ?>
 <!DOCTYPE html>
 <html lang="sr">
@@ -43,7 +40,7 @@
                     $klasa = get_class($proizvod);
                     $brend = $proizvod->getBrend();
                     $cena = $proizvod->getCena();
-                    $kolicina = $proizvod->getStanjeNaLageru(); 
+                    $kolicina = $proizvod->getStanjeNaLageru();
                     $id = $proizvod->getId();
                 ?>
                 <?php include '../moduli/item_holder.php'; ?>
