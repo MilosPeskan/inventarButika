@@ -84,56 +84,6 @@ class Repository {
         }
     }
     
-    public function nadjiOdecu($id) {
-        $sql = "SELECT p.*, o.velicina, o.tip_odece
-                FROM proizvodi p
-                JOIN odeca o ON p.id = o.id
-                WHERE p.id = :id";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        $row = $stmt->fetch();
-        
-        if (!$row) return null;
-        
-        $odeca = new Odeca(
-            $row['naziv'],
-            $row['cena'],
-            $row['brend'],
-            $row['stanje_na_lageru'],
-            $row['velicina'],
-            $row['tip_odece']
-        );
-        $odeca->setId($row['id']);
-        
-        return $odeca;
-    }
-    
-    public function nadjiObucu($id) {
-        $sql = "SELECT p.*, o.broj, o.tip_obuce, o.pol
-                FROM proizvodi p
-                JOIN obuca o ON p.id = o.id
-                WHERE p.id = :id";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        $row = $stmt->fetch();
-        
-        if (!$row) return null;
-        
-        $obuca = new Obuca(
-            $row['naziv'],
-            $row['cena'],
-            $row['brend'],
-            $row['stanje_na_lageru'],
-            $row['broj'],
-            $row['tip_obuce'],
-            $row['pol']
-        );
-        $obuca->setId($row['id']);
-        
-        return $obuca;
-    }
     
     public function svaOdeca() {
         $sql = "SELECT p.*, o.velicina, o.tip_odece
@@ -192,126 +142,7 @@ class Repository {
         $stmt->execute([':id' => $id]);
         return $stmt->rowCount() > 0;
     }
-
-    public function azurirajOdecu(Odeca $odeca) {
-        try {
-            $this->db->beginTransaction();
             
-            $sql = "UPDATE proizvodi 
-                    SET naziv = :naziv, 
-                        cena = :cena, 
-                        opis = :opis, 
-                        stanje_na_lageru = :stanje
-                    WHERE id = :id";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':id' => $odeca->getId(),
-                ':naziv' => $odeca->getNaziv(),
-                ':cena' => $odeca->getCena(),
-                ':opis' => $odeca->getOpis(),
-                ':stanje' => $odeca->getStanjeNaLageru()
-            ]);
-            
-            $sql = "UPDATE odeca 
-                    SET velicina = :velicina, 
-                        materijal = :materijal, 
-                        tip_odece = :tip
-                    WHERE id = :id";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':id' => $odeca->getId(),
-                ':velicina' => $odeca->getVelicina(),
-                ':materijal' => $odeca->getMaterijal(),
-                ':tip' => $odeca->getTipOdece()
-            ]);
-            
-            $this->db->commit();
-            return true;
-            
-        } catch (Exception $e) {
-            $this->db->rollBack();
-            throw new Exception("Greška pri ažuriranju odeće: " . $e->getMessage());
-        }
-    }
-
-    public function azurirajObucu(Obuca $obuca) {
-        try {
-            $this->db->beginTransaction();
-            
-            $sql = "UPDATE proizvodi 
-                    SET naziv = :naziv, 
-                        cena = :cena, 
-                        opis = :opis, 
-                        stanje_na_lageru = :stanje
-                    WHERE id = :id";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':id' => $obuca->getId(),
-                ':naziv' => $obuca->getNaziv(),
-                ':cena' => $obuca->getCena(),
-                ':opis' => $obuca->getOpis(),
-                ':stanje' => $obuca->getStanjeNaLageru()
-            ]);
-            
-            $sql = "UPDATE obuca 
-                    SET broj = :broj, 
-                        tip_obuce = :tip, 
-                        pol = :pol
-                    WHERE id = :id";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':id' => $obuca->getId(),
-                ':broj' => $obuca->getBroj(),
-                ':tip' => $obuca->getTipObuce(),
-                ':pol' => $obuca->getPol()
-            ]);
-            
-            $this->db->commit();
-            return true;
-            
-        } catch (Exception $e) {
-            $this->db->rollBack();
-            throw new Exception("Greška pri ažuriranju obuće: " . $e->getMessage());
-        }
-    }
-
-    public function azurirajCenu($id, $novaCena) {
-        try {
-            $sql = "UPDATE proizvodi SET cena = :cena WHERE id = :id";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':id' => $id,
-                ':cena' => $novaCena
-            ]);
-            
-            return $stmt->rowCount() > 0;
-            
-        } catch (Exception $e) {
-            throw new Exception("Greška pri ažuriranju cene: " . $e->getMessage());
-        }
-    }
-    
-    
-    public function azurirajStanje($id, $novoStanje) {
-        try {
-            $sql = "UPDATE proizvodi SET stanje_na_lageru = :stanje WHERE id = :id";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':id' => $id,
-                ':stanje' => $novoStanje
-            ]);
-            
-            return $stmt->rowCount() > 0;
-            
-        } catch (Exception $e) {
-            throw new Exception("Greška pri ažuriranju stanja: " . $e->getMessage());
-        }
-    }
-        
     public function povecajStanje($id, $kolicina) {
         try {
             $sql = "UPDATE proizvodi 
@@ -358,8 +189,7 @@ class Repository {
             throw new Exception("Greška pri smanjenju stanja: " . $e->getMessage());
         }
     }
-    
-    
+        
     public function primeniPopustNaSve($procenat, $tip_proizvoda = null) {
         try {
             $sql = "UPDATE proizvodi 
