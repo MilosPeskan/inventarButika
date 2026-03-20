@@ -44,10 +44,12 @@
                 <input type="password" id="kredencijali" name="kredencijali" minlength="6" maxlength="6" required><br>
                 <br><br>
                 <label for="uloga">Izaberite ulogu:</label>
-                <input type="radio" name="uloga" id="radnik" value="radnik" class="radio" checked>
-                <label for="radnik" class="radio-label">Radnik</label>
-                <input type="radio" name="uloga" id="admin" value="admin" class="radio">
-                <label for="admin" class="radio-label">Administrator</label>
+                <div id="check">
+                    <input type="radio" name="uloga" id="radnik" value="radnik" class="radio" checked>
+                    <label for="radnik" class="radio-label">Radnik</label>
+                    <input type="radio" name="uloga" id="admin" value="admin" class="radio">
+                    <label for="admin" class="radio-label">Administrator</label>
+                </div>
                 <br><br>
                 <button type="submit" name="submit_button">Dodaj</button>
             </form> 
